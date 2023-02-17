@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:crypto_market_cap_flutter/Repositories/main_page_repository.dart';
 import 'package:flutter/material.dart';
 import '../Models/crypto_data_model.dart';
@@ -10,9 +12,14 @@ class MainViewModel extends ChangeNotifier {
 
   final MainPageRepository mainPageRepo;
 
-  List<CryptoDataModel> cryptoDataList = <CryptoDataModel>[];
+  List<CryptoDataModel> _cryptoDataList = [];
+
+  UnmodifiableListView<CryptoDataModel> get cryptoDataList {
+    return UnmodifiableListView(_cryptoDataList);
+  }
 
   Future<void> fetchData() async {
-    cryptoDataList = await mainPageRepo.fetchData();
+    _cryptoDataList = await mainPageRepo.fetchData();
+    notifyListeners();
   }
 }
