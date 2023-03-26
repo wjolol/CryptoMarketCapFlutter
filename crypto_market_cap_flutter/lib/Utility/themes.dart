@@ -16,12 +16,6 @@ class Themes extends ChangeNotifier {
     _loadprefs();
   }
 
-  // void switchTolight() {
-  //   _darktheme = false;
-  //   _saveprefs();
-  //   notifyListeners();
-  // }
-
   void switchTheme() {
       _darktheme = !_darktheme;
       _saveprefs();
