@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:crypto_market_cap_flutter/DependencyInjection/locator.dart';
 import 'package:provider/provider.dart';
 import 'package:crypto_market_cap_flutter/Utility/themes.dart';
-
+import 'package:crypto_market_cap_flutter/Models/filter.dart';
 Future<void> main() async {
 
   setupLocator();
@@ -17,6 +17,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => MainViewModel(mainPageRepo: locator<MainPageRepository>())),
         ChangeNotifierProvider(create: (_) => CryptoDetailViewModel(repository: locator<CryptoDataRepository>())),
         ChangeNotifierProvider(create: (_) => Themes()),
+        ChangeNotifierProvider(create: (_) => Filters()),
       ],
       child: const MyApp(),
     ),

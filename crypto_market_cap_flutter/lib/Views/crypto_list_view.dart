@@ -1,4 +1,6 @@
 import 'package:crypto_market_cap_flutter/Views/crypto_detail_view.dart';
+import 'package:crypto_market_cap_flutter/widgets/filter_container.dart';
+import 'package:crypto_market_cap_flutter/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_market_cap_flutter/widgets/table_row.dart';
 import 'package:crypto_market_cap_flutter/ViewModels/main_view_model.dart';
@@ -41,27 +43,25 @@ class _CryptoListView extends State<CryptoListView> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body:
-      ChangeNotifierProvider(
-        create: (context) => viewModel,
-        child: 
-        SafeArea(child: 
+      SafeArea(child: 
           Column(children: [
+            const FilterContainer(),
             Expanded(child: 
               Consumer<MainViewModel>(builder: (context, mainViewModel, chid) {
-                return 
+                return mainViewModel.isLoading ? const Loader() : 
                 ListView.builder(itemCount: viewModel.cryptoDataList.length,
                   itemBuilder: (context, index) {
                     final cryptoData = viewModel.cryptoDataList[index];
                     return GestureDetector(onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: ((context) => CryptoDetailView(cryptoId: cryptoData.id, cryptoImage: cryptoData.image, cryptoName: cryptoData.name))));
-                    },
-                    child: CryptoTableRow(cryptoData: cryptoData, position: (index+1).toString()));
+                    }, 
+                    child: CryptoTableRow(cryptoData: cryptoData, position: (index+1).toString())
+                    );
                 });
               })
             ),
           ]),
         )
-      )
     );
   }
 }

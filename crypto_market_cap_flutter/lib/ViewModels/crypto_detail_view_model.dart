@@ -11,16 +11,18 @@ class CryptoDetailViewModel extends ChangeNotifier {
   final CryptoDataRepository repository;
 
   CryptoDetailModel? _cryptoDetail;
-  
+  bool isLoading = false;
 
   Future<void> fetchData(String cryptoId) async {
+    isLoading = true;
     _cryptoDetail = await repository.fetchCryptoDetail(cryptoId);
+    isLoading = false;
     notifyListeners();
   }
 
   String getDescription() {
     if (_cryptoDetail?.description.text == null || _cryptoDetail?.description.text.trim() == "") {
-      return "Descrizione non disponibile";
+      return "Description not available";
     } else {
       return _cryptoDetail?.description.text ?? "-";
     }

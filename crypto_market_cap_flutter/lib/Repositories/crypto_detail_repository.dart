@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:crypto_market_cap_flutter/Models/crypto_detail_model.dart';
 import 'package:http/http.dart' show get;

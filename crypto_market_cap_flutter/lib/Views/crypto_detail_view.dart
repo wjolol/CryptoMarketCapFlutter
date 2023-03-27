@@ -1,4 +1,5 @@
 import 'package:crypto_market_cap_flutter/ViewModels/crypto_detail_view_model.dart';
+import 'package:crypto_market_cap_flutter/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,8 @@ class _CryptoDetailView extends State<CryptoDetailView> {
                 Text(widget.cryptoName, style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 10.0,),
                 Consumer<CryptoDetailViewModel>(builder: (context, viewModel, child) {
-                  return Text(viewModel.getDescription(), style: Theme.of(context).textTheme.bodyMedium);
+                  return viewModel.isLoading ? const SizedBox(height: 200, child: Loader(),) :
+                   Text(viewModel.getDescription(), style: Theme.of(context).textTheme.bodyMedium);
                 })
               ],),
           ],)
