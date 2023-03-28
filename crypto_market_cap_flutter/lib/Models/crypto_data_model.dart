@@ -7,8 +7,8 @@ class CryptoDataModel {
   final String symbol;
   final String name;
   final dynamic currentPrice;
-  final int marketCap;
-  final int marketCapRank;
+  final dynamic marketCap;
+  final int? marketCapRank;
   final dynamic priceChange24h;
 
   CryptoDataModel(this.name, this.image, this.id, this.symbol, this.currentPrice, this.marketCap, this.marketCapRank, this.priceChange24h);
@@ -26,6 +26,9 @@ class CryptoDataModel {
         marketCapRank = json['market_cap_rank'],
         priceChange24h = json['price_change_24h']
   ;
+
+  String formattedName() => name.length > 20 ? "${name.substring(0, 17)}..." : name;
+  
 
   String currentPriceFormatted() {
     if (currentPrice is int || currentPrice is double) {
@@ -56,7 +59,7 @@ class CryptoDataModel {
         return Colors.red;
       }
     }
-    return Colors.black;
+    return Colors.yellow;
 
   }
 }

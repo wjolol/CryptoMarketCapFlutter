@@ -1,3 +1,4 @@
+import 'package:crypto_market_cap_flutter/Models/filter.dart';
 import 'package:crypto_market_cap_flutter/Views/crypto_detail_view.dart';
 import 'package:crypto_market_cap_flutter/widgets/filter_container.dart';
 import 'package:crypto_market_cap_flutter/widgets/loader.dart';
@@ -17,17 +18,36 @@ class _CryptoListView extends State<CryptoListView> {
 
   late MainViewModel viewModel;
   late Themes themeManager;
+  late Filters filtersViewModel;
+
+  final ScrollController _controller = ScrollController();
  
   @override
   void initState() {
     super.initState();
     viewModel = Provider.of<MainViewModel>(context, listen: false);
     themeManager = Provider.of<Themes>(context, listen: false);
-    getDataAndBuildUI();
+    filtersViewModel = Provider.of<Filters>(context, listen: false);
+    _getDataAndBuildUI();
   }
 
-  void getDataAndBuildUI() async {
-    await viewModel.fetchData();
+  void _getDataAndBuildUI() async {
+    await filtersViewModel.loadprefs();
+    await viewModel.fetchData(filtersViewModel.currencyFilter.currencyString, filtersViewModel.orderFilter.orderStringForService);
+  }
+
+  void _reloadWithNewData() async {
+    await viewModel.fetchData(filtersViewModel.currencyFilter.currencyString,
+        filtersViewModel.orderFilter.orderStringForService);
+    _scrollToTop();
+        
+  }
+
+  void _scrollToTop() {
+    _controller.animateTo(_controller.position.minScrollExtent, 
+      duration: const Duration(seconds: 2), 
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   @override
@@ -45,11 +65,12 @@ class _CryptoListView extends State<CryptoListView> {
       body:
       SafeArea(child: 
           Column(children: [
-            const FilterContainer(),
+            FilterContainer(applyFiltersAndReload: _reloadWithNewData,),
             Expanded(child: 
               Consumer<MainViewModel>(builder: (context, mainViewModel, chid) {
                 return mainViewModel.isLoading ? const Loader() : 
-                ListView.builder(itemCount: viewModel.cryptoDataList.length,
+                ListView.builder(controller: _controller,
+                  itemCount: viewModel.cryptoDataList.length,
                   itemBuilder: (context, index) {
                     final cryptoData = viewModel.cryptoDataList[index];
                     return GestureDetector(onTap: () {

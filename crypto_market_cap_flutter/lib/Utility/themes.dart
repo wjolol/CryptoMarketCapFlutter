@@ -55,8 +55,12 @@ class Themes extends ChangeNotifier {
       
     ),
     iconTheme: const IconThemeData(color: Colors.black),
-    elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => CustomColors.clear), elevation: MaterialStateProperty.resolveWith((states) => 0.0),))
-    //scaffoldBackgroundColor: CustomColors.backgroundGrey,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateColor.resolveWith((states) => CustomColors.clear),
+        elevation: MaterialStateProperty.resolveWith((states) => 0.0),
+      )
+    )
   );
 
   final darkThemeData = ThemeData(
@@ -77,12 +81,17 @@ class Themes extends ChangeNotifier {
     scaffoldBackgroundColor: Colors.black,
     cardColor: Colors.white,
     iconTheme: const IconThemeData(color: Colors.white),
-    elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => CustomColors.clear), elevation: MaterialStateProperty.resolveWith((states) => 0.0),))
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateColor.resolveWith((states) => CustomColors.clear),
+        elevation: MaterialStateProperty.resolveWith((states) => 0.0),
+      )
+    )
   );
-  
 }
 
 class CustomColors {
   static const backgroundGrey = Color(0xffaaadab);
+  static const selectedElevateButton = Color.fromARGB(255, 174, 132, 9);
   static const clear = Color.fromARGB(0, 255, 255, 255);
 }

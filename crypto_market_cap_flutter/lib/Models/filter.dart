@@ -11,41 +11,45 @@ class Filters extends ChangeNotifier {
 
   CurrencyFilter get currencyFilter => _currencyFilter;
   OrderFilter get orderFilter => _orderFilter;
+  set setCurrencyFilter(CurrencyFilter filter) => _currencyFilter = filter;
+  set setOrderFilter(OrderFilter filter) => _orderFilter = filter;
 
   Filters() {
     _currencyFilter = CurrencyFilter.eur;
     _orderFilter = OrderFilter.marketCapDesc;
-    _loadprefs();
+    //loadprefs();
   }
 
   Future<void> _initiateprefs() async {
     _prefs ??= await SharedPreferences.getInstance();
   }
 
-  Future<void> _loadprefs() async {
+  Future<void> loadprefs() async {
     await _initiateprefs();
     if (_prefs != null && _prefs!.getStringList(key) != null) {
       List<String> filters = _prefs!.getStringList(key)!;
-      _currencyFilter = setCurrencyFilter(filters[0]);
-      _orderFilter = setOrderFilter(filters[1]);
+      _currencyFilter = _stringToCurrencyFilter(filters[0]);
+      _orderFilter = _stringTosetOrderFilter(filters[1]);
+      //print("Order:${_orderFilter.orderStringForFilter}------Currency:${_currencyFilter.currencyString}");
       notifyListeners();
     }
   }
 
   Future<void> _saveprefs() async {
-    await _initiateprefs();
-    _prefs?.setStringList(key, [_currencyFilter.currencyString, _orderFilter.orderString]);
+    //await _initiateprefs();
+    _prefs?.setStringList(key, [_currencyFilter.currencyString, _orderFilter.orderStringForService]);
   }
 
   void saveFilters(CurrencyFilter currencyFilter, OrderFilter orderFilter) {
     _orderFilter = orderFilter;
     _currencyFilter = currencyFilter;
+    print("Order:${_orderFilter.orderStringForFilter}------Currency:${_currencyFilter.currencyString}");
     _saveprefs();
     notifyListeners();
   }
 
 
-  CurrencyFilter setCurrencyFilter(String string) {
+  CurrencyFilter _stringToCurrencyFilter(String string) {
     if (string == CurrencyFilter.eur.currencyString) {
       return CurrencyFilter.eur;
     } else if (string == CurrencyFilter.jpn.currencyString) {
@@ -57,10 +61,10 @@ class Filters extends ChangeNotifier {
     }
   }
 
-  OrderFilter setOrderFilter(String string) {
-    if (string == OrderFilter.marketCapAsc.orderStringForFilter) {
+  OrderFilter _stringTosetOrderFilter(String string) {
+    if (string == OrderFilter.marketCapAsc.orderStringForService) {
       return OrderFilter.marketCapAsc;
-    } else if (string == OrderFilter.marketCapDesc.orderStringForFilter) {
+    } else if (string == OrderFilter.marketCapDesc.orderStringForService) {
       return OrderFilter.marketCapDesc;
     } else {
       return OrderFilter.marketCapDesc;
@@ -87,7 +91,7 @@ extension CurrencyFilterExtension on CurrencyFilter {
       case CurrencyFilter.eur:
       return "eur";
       case CurrencyFilter.jpn:
-      return "jpn";
+      return "jpy";
       case CurrencyFilter.usd:
       return "usd";
     } 
@@ -111,7 +115,7 @@ enum OrderFilter {
 }
 
 extension OrderFilterExtension on OrderFilter {
-  String get orderString {
+  String get orderStringForService {
     switch(this) {
       case OrderFilter.marketCapAsc:
       return "market_cap_asc";

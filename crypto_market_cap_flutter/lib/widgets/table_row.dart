@@ -22,9 +22,13 @@ class CryptoTableRow extends StatelessWidget {
         Row(children: [
           Text(position, style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(width: 5),
-          Hero(tag: "${cryptoData.id}logo", child: Image.network(cryptoData.image, width: 20.00, height: 20.00,),),
+          Hero(tag: "${cryptoData.id}logo", child: Image.network(cryptoData.image, width: 20.00, height: 20.00, 
+            errorBuilder:(context, error, stackTrace) {
+              return const Icon(Icons.error_outlined);
+            },),
+          ),
           const SizedBox(width: 10),
-          Text(cryptoData.name, style: Theme.of(context).textTheme.bodyMedium),
+          Text(cryptoData.formattedName(), style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(width: 30),
           Text(cryptoData.currentPriceFormatted(), style: Theme.of(context).textTheme.bodyMedium),
           const Spacer(),

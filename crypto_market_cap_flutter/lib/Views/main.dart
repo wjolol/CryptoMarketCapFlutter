@@ -38,11 +38,6 @@ class MyApp extends StatelessWidget {
             title: 'Crypto Market Cap',
             theme: state.darkTheme ? state.darkThemeData : state.brightThemeData,
             home: const CryptoListView(),
-            // routes: {
-            //   NavigationRoutes.cryptoListViewRoute : (context) => const CryptoListView(),
-            //   NavigationRoutes.cryptoDetailViewRoute : (context) => const CryptoDetailView(),
-            // }
-
         );
       }) 
     );
