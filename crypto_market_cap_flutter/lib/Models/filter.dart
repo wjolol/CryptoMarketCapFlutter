@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Filters extends ChangeNotifier {
-
   final String key = "selectedFilters";
   SharedPreferences? _prefs;
-  
+
   late CurrencyFilter _currencyFilter;
   late OrderFilter _orderFilter;
 
@@ -28,13 +27,14 @@ class Filters extends ChangeNotifier {
     if (_prefs != null && _prefs!.getStringList(key) != null) {
       List<String> filters = _prefs!.getStringList(key)!;
       _currencyFilter = _stringToCurrencyFilter(filters[0]);
-      _orderFilter = _stringTosetOrderFilter(filters[1]);
+      _orderFilter = _stringToSetOrderFilter(filters[1]);
       notifyListeners();
     }
   }
 
   Future<void> _saveprefs() async {
-    _prefs?.setStringList(key, [_currencyFilter.currencyString, _orderFilter.orderStringForService]);
+    _prefs?.setStringList(key,
+        [_currencyFilter.currencyString, _orderFilter.orderStringForService]);
   }
 
   void saveFilters(CurrencyFilter currencyFilter, OrderFilter orderFilter) {
@@ -43,7 +43,6 @@ class Filters extends ChangeNotifier {
     _saveprefs();
     notifyListeners();
   }
-
 
   CurrencyFilter _stringToCurrencyFilter(String string) {
     if (string == CurrencyFilter.eur.currencyString) {
@@ -57,7 +56,7 @@ class Filters extends ChangeNotifier {
     }
   }
 
-  OrderFilter _stringTosetOrderFilter(String string) {
+  OrderFilter _stringToSetOrderFilter(String string) {
     if (string == OrderFilter.marketCapAsc.orderStringForService) {
       return OrderFilter.marketCapAsc;
     } else if (string == OrderFilter.marketCapDesc.orderStringForService) {
@@ -66,7 +65,6 @@ class Filters extends ChangeNotifier {
       return OrderFilter.marketCapDesc;
     }
   }
-
 }
 
 enum FilterType {
@@ -83,14 +81,14 @@ enum CurrencyFilter {
 
 extension CurrencyFilterExtension on CurrencyFilter {
   String get currencyString {
-    switch(this) {
+    switch (this) {
       case CurrencyFilter.eur:
-      return "eur";
+        return "eur";
       case CurrencyFilter.jpn:
-      return "jpy";
+        return "jpy";
       case CurrencyFilter.usd:
-      return "usd";
-    } 
+        return "usd";
+    }
   }
 
   String get currencySymbol {
@@ -112,12 +110,12 @@ enum OrderFilter {
 
 extension OrderFilterExtension on OrderFilter {
   String get orderStringForService {
-    switch(this) {
+    switch (this) {
       case OrderFilter.marketCapAsc:
-      return "market_cap_asc";
+        return "market_cap_asc";
       case OrderFilter.marketCapDesc:
-      return "market_cap_desc";
-    } 
+        return "market_cap_desc";
+    }
   }
 
   String get orderStringForFilter {
