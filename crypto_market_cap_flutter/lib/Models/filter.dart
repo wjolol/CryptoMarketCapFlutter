@@ -17,7 +17,6 @@ class Filters extends ChangeNotifier {
   Filters() {
     _currencyFilter = CurrencyFilter.eur;
     _orderFilter = OrderFilter.marketCapDesc;
-    //loadprefs();
   }
 
   Future<void> _initiateprefs() async {
@@ -30,20 +29,17 @@ class Filters extends ChangeNotifier {
       List<String> filters = _prefs!.getStringList(key)!;
       _currencyFilter = _stringToCurrencyFilter(filters[0]);
       _orderFilter = _stringTosetOrderFilter(filters[1]);
-      //print("Order:${_orderFilter.orderStringForFilter}------Currency:${_currencyFilter.currencyString}");
       notifyListeners();
     }
   }
 
   Future<void> _saveprefs() async {
-    //await _initiateprefs();
     _prefs?.setStringList(key, [_currencyFilter.currencyString, _orderFilter.orderStringForService]);
   }
 
   void saveFilters(CurrencyFilter currencyFilter, OrderFilter orderFilter) {
     _orderFilter = orderFilter;
     _currencyFilter = currencyFilter;
-    print("Order:${_orderFilter.orderStringForFilter}------Currency:${_currencyFilter.currencyString}");
     _saveprefs();
     notifyListeners();
   }

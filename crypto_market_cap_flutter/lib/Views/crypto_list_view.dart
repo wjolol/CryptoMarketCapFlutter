@@ -31,6 +31,12 @@ class _CryptoListView extends State<CryptoListView> {
     _getDataAndBuildUI();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   void _getDataAndBuildUI() async {
     await filtersViewModel.loadprefs();
     await viewModel.fetchData(filtersViewModel.currencyFilter.currencyString, filtersViewModel.orderFilter.orderStringForService);
