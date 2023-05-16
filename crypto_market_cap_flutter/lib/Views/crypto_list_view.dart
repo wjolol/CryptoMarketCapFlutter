@@ -1,4 +1,4 @@
-import 'package:crypto_market_cap_flutter/Models/filter.dart';
+import 'package:crypto_market_cap_flutter/Utility/filter.dart';
 import 'package:crypto_market_cap_flutter/Views/crypto_detail_view.dart';
 import 'package:crypto_market_cap_flutter/widgets/filter_container.dart';
 import 'package:crypto_market_cap_flutter/widgets/loader.dart';
@@ -15,13 +15,12 @@ class CryptoListView extends StatefulWidget {
 }
 
 class _CryptoListView extends State<CryptoListView> {
-
   late MainViewModel viewModel;
   late Themes themeManager;
   late Filters filtersViewModel;
 
   final ScrollController _controller = ScrollController();
- 
+
   @override
   void initState() {
     super.initState();
@@ -39,19 +38,20 @@ class _CryptoListView extends State<CryptoListView> {
 
   void _getDataAndBuildUI() async {
     await filtersViewModel.loadprefs();
-    await viewModel.fetchData(filtersViewModel.currencyFilter.currencyString, filtersViewModel.orderFilter.orderStringForService);
+    await viewModel.fetchData(filtersViewModel.currencyFilter.currencyString,
+        filtersViewModel.orderFilter.orderStringForService);
   }
 
   void _reloadWithNewData() async {
     await viewModel.fetchData(filtersViewModel.currencyFilter.currencyString,
         filtersViewModel.orderFilter.orderStringForService);
     _scrollToTop();
-        
   }
 
   void _scrollToTop() {
-    _controller.animateTo(_controller.position.minScrollExtent, 
-      duration: const Duration(seconds: 2), 
+    _controller.animateTo(
+      _controller.position.minScrollExtent,
+      duration: const Duration(seconds: 2),
       curve: Curves.fastOutSlowIn,
     );
   }
@@ -59,36 +59,51 @@ class _CryptoListView extends State<CryptoListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Crypto Market Cap', style: Theme.of(context).textTheme.titleMedium),
-        actions: [ElevatedButton(style: 
-          themeManager.darkTheme ? themeManager.darkThemeData.elevatedButtonTheme.style : themeManager.brightThemeData.elevatedButtonTheme.style,
-          onPressed:() => {themeManager.switchTheme()}, 
-          child: Icon(themeManager.darkTheme ? Icons.sunny : Icons.dark_mode, color: Theme.of(context).iconTheme.color))
-        ],
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body:
-      SafeArea(child: 
-          Column(children: [
-            FilterContainer(applyFiltersAndReload: _reloadWithNewData,),
-            Expanded(child: 
-              Consumer<MainViewModel>(builder: (context, mainViewModel, chid) {
-                return mainViewModel.isLoading ? const Loader() : 
-                ListView.builder(controller: _controller,
-                  itemCount: viewModel.cryptoDataList.length,
-                  itemBuilder: (context, index) {
-                    final cryptoData = viewModel.cryptoDataList[index];
-                    return GestureDetector(onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: ((context) => CryptoDetailView(cryptoId: cryptoData.id, cryptoImage: cryptoData.image, cryptoName: cryptoData.name))));
-                    }, 
-                    child: CryptoTableRow(cryptoData: cryptoData, position: (index+1).toString())
-                    );
-                });
-              })
+        appBar: AppBar(
+          title: Text('Crypto Market Cap',
+              style: Theme.of(context).textTheme.titleMedium),
+          actions: [
+            ElevatedButton(
+                style: themeManager.darkTheme
+                    ? themeManager.darkThemeData.elevatedButtonTheme.style
+                    : themeManager.brightThemeData.elevatedButtonTheme.style,
+                onPressed: () => {themeManager.switchTheme()},
+                child: Icon(
+                    themeManager.darkTheme ? Icons.sunny : Icons.dark_mode,
+                    color: Theme.of(context).iconTheme.color))
+          ],
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        body: SafeArea(
+          child: Column(children: [
+            FilterContainer(
+              applyFiltersAndReload: _reloadWithNewData,
             ),
+            Expanded(child: Consumer<MainViewModel>(
+                builder: (context, mainViewModel, child) {
+              return mainViewModel.isLoading
+                  ? const Loader()
+                  : ListView.builder(
+                      controller: _controller,
+                      itemCount: viewModel.cryptoDataList.length,
+                      itemBuilder: (context, index) {
+                        final cryptoData = viewModel.cryptoDataList[index];
+                        return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => CryptoDetailView(
+                                          cryptoId: cryptoData.id,
+                                          cryptoImage: cryptoData.image,
+                                          cryptoName: cryptoData.name))));
+                            },
+                            child: CryptoTableRow(
+                                cryptoData: cryptoData,
+                                position: (index + 1).toString()));
+                      });
+            })),
           ]),
-        )
-    );
+        ));
   }
 }

@@ -7,15 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:crypto_market_cap_flutter/DependencyInjection/locator.dart';
 import 'package:provider/provider.dart';
 import 'package:crypto_market_cap_flutter/Utility/themes.dart';
-import 'package:crypto_market_cap_flutter/Models/filter.dart';
-Future<void> main() async {
+import 'package:crypto_market_cap_flutter/Utility/filter.dart';
 
+Future<void> main() async {
   setupLocator();
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MainViewModel(mainPageRepo: locator<MainPageRepository>())),
-        ChangeNotifierProvider(create: (_) => CryptoDetailViewModel(repository: locator<CryptoDataRepository>())),
+        ChangeNotifierProvider(
+            create: (_) =>
+                MainViewModel(mainPageRepo: locator<MainPageRepository>())),
+        ChangeNotifierProvider(
+            create: (_) => CryptoDetailViewModel(
+                repository: locator<CryptoDataRepository>())),
         ChangeNotifierProvider(create: (_) => Themes()),
         ChangeNotifierProvider(create: (_) => Filters()),
       ],
@@ -27,20 +31,18 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context) => Themes(), child:
-      Consumer<Themes>(builder: (context, state, child) {
-        return MaterialApp(
+    return ChangeNotifierProvider(
+        create: (context) => Themes(),
+        child: Consumer<Themes>(builder: (context, state, child) {
+          return MaterialApp(
             title: 'Crypto Market Cap',
-            theme: state.darkTheme ? state.darkThemeData : state.brightThemeData,
+            theme:
+                state.darkTheme ? state.darkThemeData : state.brightThemeData,
             home: const CryptoListView(),
-        );
-      }) 
-    );
+          );
+        }));
   }
 }
-

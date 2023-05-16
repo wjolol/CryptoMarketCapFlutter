@@ -1,4 +1,4 @@
-import 'package:crypto_market_cap_flutter/Models/filter.dart';
+import 'package:crypto_market_cap_flutter/Utility/filter.dart';
 import 'package:crypto_market_cap_flutter/widgets/filter_scroll_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +35,8 @@ class _FilterContainer extends State<FilterContainer> {
                       _isVisible = !_isVisible;
                     });
                   },
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Text("Filters"),
                       Spacer(),
                       Icon(Icons.arrow_downward)
@@ -61,12 +61,9 @@ class _FilterContainer extends State<FilterContainer> {
                               _isVisible = !_isVisible;
                             });
                           },
-                          child: const Text("APPLY")
-                      )
-                  )
+                          child: const Text("APPLY")))
                 ],
-              )
-          )
+              ))
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:crypto_market_cap_flutter/Models/filter.dart';
+import 'package:crypto_market_cap_flutter/Utility/filter.dart';
 import 'package:crypto_market_cap_flutter/Utility/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
